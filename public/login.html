@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>Login | uchenzylogs</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="/scripts/sweetalert2.all.min.js"></script>
+
+  <style>
+    /* Global styles */
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg, #f5f7fb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      color: var(--text, #333);
+      transition: 0.3s;
+    }
+
+    .card {
+      background: var(--card-bg, #fff);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px var(--shadow, rgba(0,0,0,0.05));
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      color: var(--accent, #0a7c58);
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: var(--card-bg);
+      color: var(--text);
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: var(--accent, #0a7c58);
+      outline: none;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      background: var(--accent, #0a7c58);
+      color: #fff;
+      border: none;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: var(--accent-hover, #086e49);
+    }
+
+    a {
+      display: block;
+      margin-top: 1rem;
+      text-decoration: none;
+      color: var(--accent, #0a7c58);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* Theme variables */
+    :root {
+      --bg: #f5f7fb;
+      --text: #333;
+      --header-bg: #fff;
+      --card-bg: #fff;
+      --accent: #0a7c58;
+      --accent-hover: #086e49;
+      --shadow: rgba(0,0,0,0.05);
+    }
+
+    body.dark {
+      --bg: #090f18;
+      --text: #e6edf3;
+      --header-bg: #161b22;
+      --card-bg: #1f242c;
+      --accent: #3cba92;
+      --accent-hover: #3b9e75;
+      --shadow: rgba(0,0,0,0.4);
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 480px) {
+      body {
+        padding: 12px;
+      }
+
+      .card {
+        padding: 1.6rem;
+        border-radius: 14px;
+      }
+
+      input, button {
+        font-size: 1rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Apply saved theme
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+  }
+
+  // Optional theme toggle button
+  const themeBtn = document.getElementById("themeBtn");
+  if (themeBtn) {
+    themeBtn.textContent = document.body.classList.contains("dark")
+      ? "☀️ Light Mode"
+      : "🌙 Dark Mode";
+
+    themeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      const darkMode = document.body.classList.contains("dark");
+      localStorage.setItem("theme", darkMode ? "dark" : "light");
+
+      themeBtn.textContent = darkMode
+        ? "☀️ Light Mode"
+        : "🌙 Dark Mode";
+    });
+  }
+});
+</script>
+
+<body>
+  <!-- Theme Toggle Button -->
+  <button id="themeBtn" style="position: absolute; top: 20px; right: 20px; background: var(--card-bg); padding: 8px 14px; border-radius: 8px; font-size: 0.9rem; cursor: pointer;">🌙 Dark Mode</button>
+
+  <!-- Card Content -->
+  <div class="card">
+    <h1>Welcome Back 👋</h1>
+
+    <input id="email" type="email" placeholder="Email" required />
+    <input id="password" type="password" placeholder="Password" required />
+
+    <button id="loginBtn">Login</button>
+    <a href="/register.html">Create Account</a>
+  </div>
+
+  <script>
+    const apiBase = "http://localhost:4000";
+    const loginBtn = document.getElementById("loginBtn");
+
+    loginBtn.addEventListener("click", async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        return Swal.fire("Error", "Please enter both email and password.", "error");
+      }
+
+      loginBtn.disabled = true;  // Disable button to prevent multiple clicks
+      loginBtn.textContent = "Logging in...";
+
+      try {
+        const res = await fetch(`${apiBase}/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || "Login failed");
+
+        if (data.token) {
+          localStorage.setItem("ul_token", data.token);  // Save token
+        } else {
+          throw new Error("No token received from server.");
+        }
+
+        Swal.fire("Success", "Login successful!", "success");
+
+        setTimeout(() => {
+          window.location.href = "/dashboard.html";
+        }, 1000);
+
+      } catch (err) {
+        Swal.fire("Error", err.message, "error");
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Login";
+      }
+    });
+  </script>
+</body>
+</html>
