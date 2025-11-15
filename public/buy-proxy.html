@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Buy Proxy | uchenzylogs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- LOCAL SweetAlert2 -->
+  <script src="/scripts/sweetalert2.all.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --text: #333;
+      --card-bg: #fff;
+      --accent: #0a7c58;
+      --shadow: rgba(0, 0, 0, 0.08);
+    }
+
+    body.dark {
+      --bg: #0a101a;
+      --text: #e6edf3;
+      --card-bg: #1c2128;
+      --accent: #3cba92;
+      --shadow: rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 1.5rem;
+      transition: 0.3s;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      font-size: 1.8rem;
+    }
+
+    .balance {
+      text-align: center;
+      color: #666;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .form-card {
+      background: var(--card-bg);
+      padding: 1.7rem;
+      border-radius: 14px;
+      max-width: 500px;
+      margin: 0 auto;
+      box-shadow: 0 4px 22px var(--shadow);
+      transition: 0.3s;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    label {
+      display: block;
+      margin-top: 1.2rem;
+      font-weight: 600;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 0.4rem;
+      font-size: 1rem;
+      background: var(--card-bg);
+      color: var(--text);
+      transition: 0.3s;
+    }
+
+    select:focus, input:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 1.4rem;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    /* TWO BUTTON ROW RESPONSIVE */
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-top: 1.2rem;
+    }
+
+    @media (max-width: 480px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+      body {
+        padding: 1rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      .form-card {
+        padding: 1.2rem;
+      }
+      button {
+        padding: 0.9rem;
+        font-size: 0.95rem;
+      }
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .small-muted {
+      margin-top: 0.7rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    #themeBtn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.9rem;
+      background: transparent;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      color: var(--accent);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #themeBtn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .copy-btn {
+      margin-top: 10px;
+      padding: 0.55rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: var(--card-bg);
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+<script>
+(() => {
+  const savedTheme = localStorage.getItem("theme") || "light";
+  if (savedTheme === "dark") document.body.classList.add("dark");
+})();
+</script>
+
+<button id="themeBtn"></button>
+
+<h1>🛡 Buy Proxy</h1>
+<div class="balance" id="balanceText">Wallet: ₦0.00</div>
+
+<div class="form-card">
+
+  <label for="proxyType">Select Proxy Type</label>
+  <select id="proxyType">
+    <option value="">-- Choose Proxy Type --</option>
+    <option value="residential">Residential Proxy</option>
+    <option value="datacenter">Datacenter Proxy</option>
+    <option value="mobile">Mobile Proxy</option>
+  </select>
+
+  <label for="price">Price (₦)</label>
+  <input type="number" id="price" readonly />
+
+  <div class="row">
+    <button id="buyProxyBtn">🛒 Buy Proxy</button>
+    <button id="refreshBalanceBtn" type="button">🔄 Refresh</button>
+  </div>
+
+  <div class="small-muted">
+    Prices enforced server-side. If you have insufficient funds, deposit via your wallet.
+  </div>
+
+  <a href="/dashboard.html" class="back">⬅ Back to Dashboard</a>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    Swal.fire("Login Required", "Please log in to continue.", "warning")
+    .then(() => window.location.href = "/login.html");
+    return;
+  }
+
+  const apiBase = "http://localhost:4000";
+  const proxyPrices = { residential: 500, datacenter: 300, mobile: 1000 };
+
+  const balanceText = document.getElementById("balanceText");
+  const proxyTypeEl = document.getElementById("proxyType");
+  const priceInput = document.getElementById("price");
+  const buyBtn = document.getElementById("buyProxyBtn");
+  const refreshBtn = document.getElementById("refreshBalanceBtn");
+
+  let balance = 0;
+
+  function formatNaira(n) {
+    return Number(n).toFixed(2);
+  }
+
+  async function loadWallet() {
+    try {
+      const res = await fetch(`${apiBase}/wallet`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        balance = data.balance;
+        balanceText.textContent = `Wallet: ₦${formatNaira(balance)}`;
+      }
+    } catch (err) {
+      Swal.fire("Error", err.message, "error");
+    }
+  }
+  loadWallet();
+
+  proxyTypeEl.addEventListener("change", () => {
+    priceInput.value = proxyPrices[proxyTypeEl.value] || "";
+  });
+
+  refreshBtn.addEventListener("click", async () => {
+    await loadWallet();
+    Swal.fire("Updated", `Wallet: ₦${formatNaira(balance)}`, "success");
+  });
+
+  buyBtn.addEventListener("click", async () => {
+    const type = proxyTypeEl.value;
+    if (!type) return Swal.fire("Error", "Please select a proxy type", "error");
+
+    if (balance < proxyPrices[type]) {
+      return Swal.fire("Insufficient Funds",
+        `Wallet ₦${formatNaira(balance)} — cost ₦${formatNaira(proxyPrices[type])}`,
+        "error");
+    }
+
+    Swal.fire({
+      title: "Processing...",
+      text: `Purchasing ${type} proxy...`,
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading()
+    });
+
+    try {
+      const res = await fetch(`${apiBase}/proxy/buy`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ type })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return Swal.fire("Error", data.error || "Failed to buy proxy", "error");
+      }
+
+      const p = data.proxy;
+      await loadWallet();
+
+      Swal.fire({
+        icon: "success",
+        title: "Proxy Purchased!",
+        html: `
+          <div style="text-align:left">
+            <b>IP:</b> ${p.ip}<br>
+            <b>Port:</b> ${p.port}<br>
+            <b>User:</b> ${p.username}<br>
+            <b>Pass:</b> ${p.password}
+          </div>
+          <br>
+          <button id="copyAddr" class="copy-btn">Copy ip:port</button>
+          <button id="copyAuth" class="copy-btn" style="margin-left:10px">Copy username:password</button>
+        `,
+        didOpen: () => {
+          Swal.getHtmlContainer().querySelector("#copyAddr").onclick = () =>
+            navigator.clipboard.writeText(`${p.ip}:${p.port}`);
+
+          Swal.getHtmlContainer().querySelector("#copyAuth").onclick = () =>
+            navigator.clipboard.writeText(`${p.username}:${p.password}`);
+        }
+      });
+
+    } catch (err) {
+      Swal.fire("Error", err.message, "error");
+    }
+  });
+
+});
+</script>
+
+</body>
+</html>

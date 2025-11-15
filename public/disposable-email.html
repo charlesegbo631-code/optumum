@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Disposable Email | Mail.tm</title>
+
+  <!-- LOAD SWEETALERT LOCALLY -->
+  <script nonce="NONCE123" src="/scripts/sweetalert2.all.min.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --bg: #111;
+      --card: #1d1d1d;
+      --box: #222;
+      --hover: #333;
+      --text: #fff;
+      --button: #007bff;
+      --button-hover: #0056b3;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 15px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: var(--card);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 14px rgba(0,0,0,0.3);
+    }
+
+    h2, h3 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: var(--button);
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-top: 12px;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: var(--button-hover);
+    }
+
+    .email-box, .message-box {
+      margin-top: 20px;
+      padding: 15px;
+      background: var(--box);
+      border-radius: 10px;
+    }
+
+    .message {
+      background: #333;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .message:hover {
+      background: var(--hover);
+      transform: translateY(-2px);
+    }
+
+    pre {
+      white-space: pre-wrap;
+      background: #000;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+
+    /* mobile adjustments */
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      .container {
+        padding: 15px;
+      }
+      button {
+        font-size: 0.95rem;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Disposable Email (Mail.tm)</h2>
+
+    <button id="generateBtn">Generate Email</button>
+
+    <div class="email-box" id="emailBox" style="display:none;">
+      <h3>Your Temporary Email</h3>
+      <p id="emailText"></p>
+    </div>
+
+    <button id="checkInboxBtn" style="display:none;">Check Inbox</button>
+
+    <div class="message-box" id="messageList" style="display:none;">
+      <h3>Inbox</h3>
+      <div id="messages"></div>
+    </div>
+
+    <div class="message-box" id="messageView" style="display:none;">
+      <h3>Message</h3>
+      <pre id="messageContent"></pre>
+    </div>
+  </div>
+
+  <!-- FULL JAVASCRIPT INLINE -->
+  <script nonce="NONCE123">
+    let accountEmail = "";
+    let accountPass = "";
+    let token = "";
+
+    function randomString(length) {
+      const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+      let result = "";
+      for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    }
+
+    document.getElementById("generateBtn").addEventListener("click", async () => {
+      Swal.fire({
+        title: "Generating…",
+        text: "Please wait",
+        icon: "info",
+        showConfirmButton: false,
+        allowOutsideClick: false,
+      });
+
+      try {
+        const domainsRes = await fetch("https://api.mail.tm/domains");
+        const domainsData = await domainsRes.json();
+        const domain = domainsData["hydra:member"][0].domain;
+
+        accountEmail = randomString(10) + "@" + domain;
+        accountPass = randomString(12);
+
+        const createRes = await fetch("https://api.mail.tm/accounts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ address: accountEmail, password: accountPass })
+        });
+
+        const createData = await createRes.json();
+        if (createData.id) {
+          Swal.fire("Success!", "Temporary email created!", "success");
+        }
+
+        const loginRes = await fetch("https://api.mail.tm/token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ address: accountEmail, password: accountPass })
+        });
+
+        const loginData = await loginRes.json();
+        token = loginData.token;
+
+        document.getElementById("emailText").innerText = accountEmail;
+        document.getElementById("emailBox").style.display = "block";
+        document.getElementById("checkInboxBtn").style.display = "block";
+
+      } catch (err) {
+        Swal.fire("Error", "Could not generate email", "error");
+      }
+    });
+
+    document.getElementById("checkInboxBtn").addEventListener("click", async () => {
+      if (!token) return Swal.fire("Error", "Generate an email first!", "error");
+
+      Swal.fire({
+        title: "Checking inbox…",
+        icon: "info",
+        showConfirmButton: false
+      });
+
+      const inboxRes = await fetch("https://api.mail.tm/messages", {
+        headers: { "Authorization": "Bearer " + token }
+      });
+
+      const inboxData = await inboxRes.json();
+      const messages = inboxData["hydra:member"];
+
+      Swal.close();
+
+      const msgList = document.getElementById("messages");
+      msgList.innerHTML = "";
+
+      if (messages.length === 0) msgList.innerHTML = "<p>No messages yet.</p>";
+
+      messages.forEach(msg => {
+        const div = document.createElement("div");
+        div.className = "message";
+        div.textContent = msg.subject;
+        div.addEventListener("click", () => loadMessage(msg.id));
+        msgList.appendChild(div);
+      });
+
+      document.getElementById("messageList").style.display = "block";
+    });
+
+    async function loadMessage(id) {
+      Swal.fire({
+        title: "Opening message…",
+        icon: "info",
+        showConfirmButton: false
+      });
+
+      const res = await fetch(`https://api.mail.tm/messages/${id}`, {
+        headers: { "Authorization": "Bearer " + token }
+      });
+
+      const data = await res.json();
+      Swal.close();
+
+      document.getElementById("messageContent").innerText =
+        "From: " + data.from.address + "\n\n" +
+        "Subject: " + data.subject + "\n\n" +
+        data.text;
+
+      document.getElementById("messageView").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>

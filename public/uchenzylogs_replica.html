@@ -1,0 +1,1207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>UchenzyLogs — Replica (API-ready Single File)</title>
+<meta name="description" content="Replica of uchenzylogs.com — single file, api-ready login/register, smooth scrolling homepage." />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-1:#0c2230; --navy-2:#0e2a3b; --muted:#9aa6b2; --accent:#ffffff;
+    --card: rgba(255,255,255,0.02); --radius:12px; --maxw:1200px;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:linear-gradient(180deg,var(--navy-1),#081824 160%);color:#eef6fb;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:18px auto;padding:18px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 6px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:56px;height:56px;border-radius:8px;background:#0f2130;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;border:1px solid rgba(255,255,255,0.04)}
+  nav{display:flex;gap:18px;align-items:center}
+  .nav-link{color:rgba(255,255,255,0.9);font-weight:600;cursor:pointer}
+/* ============================
+   LUXURY MIRROR–GOLD BUTTON
+   ============================ */
+.btn {
+  position: relative;
+  background: linear-gradient(135deg, #c0a063 0%, #f8e69b 40%, #fff8e1 60%, #d4af37 100%);
+  color: #0a1b25;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  box-shadow: 0 0 20px rgba(255, 230, 150, 0.3);
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: -45%;
+  width: 60%;
+  height: 300%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.0) 100%
+  );
+  transform: rotate(25deg);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.btn:hover::before {
+  opacity: 1;
+  animation: shine 1.2s ease forwards;
+}
+
+.btn:hover {
+  transform: translateY(-3px) scale(1.05);
+
+}
+
+@keyframes shine {
+  0% {
+    left: -70%;
+  }
+  100% {
+    left: 130%;
+  }
+}
+
+/* Optional: glowing frame for ghost buttons */
+.btn.ghost {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.btn.ghost::before {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: -45%;
+  width: 60%;
+  height: 300%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.0) 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0.0) 100%
+  );
+  transform: rotate(25deg);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.btn.ghost:hover::before {
+  opacity: 1;
+  animation: shine 1.2s ease forwards;
+}
+
+.btn.ghost:hover {
+  transform: translateY(-3px) scale(1.05);
+  border-color: rgba(255, 255, 255, 0.8);
+
+}
+
+  /* HERO */
+  .hero{display:flex;gap:28px;align-items:center;padding:36px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02)}
+  .hero-left{flex:1;max-width:720px}
+  .hero h1{font-size:48px;margin:0 0 12px 0;line-height:1;letter-spacing:-0.8px}
+  .hero p{color:var(--muted);margin:0 0 18px 0;font-size:16px}
+  .cta-row{display:flex;gap:10px;align-items:center}
+  .store-badge{margin-top:14px;display:inline-block}
+  /* floating visual */
+  .hero-right{width:420px;min-height:260px;border-radius:12px;padding:18px;background:linear-gradient(180deg,#0d2a3a,#07202b);border:1px solid rgba(255,255,255,0.06);box-shadow:0 8px 40px rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center}
+  .hero-right img{max-width:100%;border-radius:8px}
+  /* Why choose */
+  section{margin-top:36px}
+  .section-head{text-align:center;margin-bottom:18px}
+  .section-head h2{font-size:34px;margin:12px 0}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+  .card h3{margin:8px 0 6px 0}
+  .card p{color:var(--muted);margin:0}
+  /* services */
+  .services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .service{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+  .service h4{margin:12px 0 8px 0}
+  .service ul{margin:0;padding-left:18px;color:var(--muted)}
+  /* how it works */
+  .how-grid{display:flex;gap:18px;align-items:flex-start;justify-content:center}
+  .step{flex-basis:200px;text-align:center}
+  .step .num{width:64px;height:64px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);font-weight:700;margin-bottom:12px}
+  /* testimonials */
+  .test-card{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);display:flex;gap:12px;align-items:flex-start}
+  .test-card img{width:56px;height:56px;border-radius:50%}
+  /* footer */
+  footer{margin-top:36px;padding:20px;border-top:1px solid rgba(255,255,255,0.03);display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .footer-links{display:flex;gap:12px}
+  .muted{color:var(--muted)}
+  /* responsive */
+  @media (max-width:1100px){ .cards{grid-template-columns:repeat(2,1fr)} .hero h1{font-size:40px} .services-grid{grid-template-columns:repeat(2,1fr)} .hero-right{width:320px} }
+  @media (max-width:680px){ header{flex-direction:column;align-items:flex-start} .hero{flex-direction:column} .cards{grid-template-columns:1fr} .services-grid{grid-template-columns:1fr} .how-grid{flex-direction:column} .hero-right{width:100%} .hero h1{font-size:28px} }
+  /* small helpers */
+  .center{text-align:center}
+  .spacer{height:14px}
+  .pill{display:inline-block;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:700}
+  .nav-cta{display:flex;gap:8px;align-items:center}
+  /* ============================
+   PREMIUM SPACING & FLOW FIX
+   ============================ */
+
+body {
+  line-height: 1.7;
+  letter-spacing: 0.2px;
+}
+
+/* Overall wrapper breathing room */
+.wrap {
+  padding: 40px 28px;
+}
+
+/* Header space */
+header {
+  padding: 24px 10px;
+  gap: 24px;
+}
+
+/* Hero section spacing */
+.hero {
+  padding: 60px 50px;
+  gap: 48px;
+  margin-top: 40px;
+}
+
+.hero h1 {
+  font-size: 52px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.hero p {
+  font-size: 18px;
+  max-width: 620px;
+  margin-bottom: 28px;
+}
+
+/* Section headings more space */
+section {
+  margin-top: 70px;
+  padding-top: 20px;
+}
+
+.section-head {
+  margin-bottom: 36px;
+}
+
+.section-head h2 {
+  font-size: 38px;
+  margin-bottom: 10px;
+}
+
+/* Cards and grids with more gaps */
+.cards {
+  gap: 28px;
+}
+
+.card {
+  padding: 26px 24px;
+  min-height: 160px;
+}
+
+.services-grid {
+  gap: 28px;
+}
+
+.service {
+  padding: 26px 24px;
+}
+
+/* How It Works */
+.how-grid {
+  gap: 32px;
+}
+
+.step .num {
+  margin-bottom: 18px;
+}
+
+/* Testimonials section */
+.test-card {
+  padding: 22px 20px;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+/* Footer breathing room */
+footer {
+  margin-top: 60px;
+  padding: 28px 20px;
+}
+.cta-section {
+  background-color: #0d1a2b;
+  color: #fff;
+  text-align: center;
+  padding: 100px 20px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.cta-section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.cta-section p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 40px;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* ============================
+   GLITTERING DIAMOND BUTTON
+   (No bright hover glow)
+   ============================ */
+.btn {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    #cfd9df 0%,       /* soft silver */
+    #e2ebf0 25%,      /* icy blue tint */
+    #f8f9fb 50%,      /* bright highlight */
+    #e2ebf0 75%,
+    #cfd9df 100%
+  );
+  color: #0a1b25;
+  padding: 12px 26px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: -45%;
+  width: 60%;
+  height: 300%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.0) 0%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(255, 255, 255, 0.0) 100%
+  );
+  transform: rotate(25deg);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.btn:hover::before {
+  opacity: 1;
+  animation: shine 1.3s ease forwards;
+}
+
+/* Only subtle lift on hover — no glow increase */
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+@keyframes shine {
+  0% { left: -70%; }
+  100% { left: 130%; }
+}
+
+
+/* Larger nav gaps */
+nav {
+  gap: 28px;
+}
+
+.nav-link {
+  font-size: 16px;
+  opacity: 0.95;
+}
+
+@media (max-width: 680px) {
+  .hero {
+    padding: 40px 24px;
+  }
+  .cards, .services-grid {
+    gap: 20px;
+  }
+  .section-head h2 {
+    font-size: 30px;
+  }
+}
+html {
+  scroll-behavior: smooth;
+}
+
+/* ================================
+   Floating Background Words
+   ================================ */
+  #floating-words {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .frow {
+    position: absolute;
+    width: 100%;
+    white-space: nowrap;
+    opacity: 0.05;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    animation: moveRow linear infinite;
+  }
+
+  @keyframes moveRow {
+    from { transform: translateX(100vw); }
+    to { transform: translateX(-100%); }
+  }
+/* Hide top navigation on small screens */
+@media (max-width: 768px) {
+  nav ul, /* or .navbar-menu if that's your class */
+  .nav-links,
+  .navbar-items {
+    display: none !important;
+  }
+
+  /* Optional: center logo + buttons nicely on mobile */
+  .navbar {
+    justify-content: space-between;
+    padding: 10px 20px;
+  }
+
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  /* make login/register stay visible if desired */
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+}
+/* Hide top navigation links in mobile view */
+@media screen and (max-width: 768px) {
+  nav ul,
+  .nav-links,
+  .navbar-links,
+  .top-links,
+  .menu-links {
+    display: none !important;
+  }
+
+  /* Optionally adjust header alignment */
+  nav {
+    justify-content: space-between;
+  }
+
+  /* Hide login/register buttons if they’re separate */
+  .auth-buttons,
+  .login-btn,
+  .register-btn {
+    display: none !important;
+  }
+}
+/* Force-hide the top navigation on mobile */
+@media screen and (max-width: 768px) {
+  header nav {
+    display: none !important;
+  }
+}
+/* Popup Alert System */
+.popup-alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+}
+
+.popup-alert.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.popup-box {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 25px 30px;
+  color: white;
+  text-align: center;
+  width: 90%;
+  max-width: 350px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  animation: popIn 0.3s ease;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.popup-box .btn {
+  margin-top: 12px;
+}
+/********************************************
+   FINAL MOBILE FIX — FULL RESPONSIVENESS
+*********************************************/
+
+@media (max-width: 768px) {
+
+  /* WRAPPER */
+  .wrap {
+    padding: 18px 14px;
+  }
+
+  /* HEADER FIX */
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  /* Show brand on top */
+  .brand {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Hide desktop nav but DO NOT hide login + register */
+  header nav {
+    display: none !important;
+  }
+
+  /* Make CTA buttons visible & centered on mobile */
+  .nav-cta {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 8px;
+  }
+
+  /* HERO FIX */
+  .hero {
+    flex-direction: column;
+    padding: 28px 18px;
+    text-align: left;
+    gap: 24px;
+  }
+
+  .hero h1 {
+    font-size: 26px;
+    line-height: 1.2;
+  }
+
+  .hero p {
+    font-size: 15px;
+  }
+
+  .hero-right {
+    width: 100%;
+  }
+
+  /* GRID FIXES — stack all grids */
+  .cards,
+  .services-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px;
+  }
+
+  /* HOW GRID */
+  .how-grid {
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  /* CTA section */
+  .cta-section {
+    padding: 60px 20px;
+  }
+
+  /* Testimonials */
+  .test-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  footer {
+    flex-direction: column;
+    text-align: center;
+    gap: 18px;
+  }
+}
+
+
+</style>
+</head>
+
+<body>
+  <div id="floating-words"></div>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">uchenzylogs</div> &nbsp: &nbsp; 
+        <nav style="display:flex;gap:22px;align-items:center">
+          <div class="nav-link" data-target="features">Features</div>
+          <div class="nav-link" data-target="services">Services</div>
+          <div class="nav-link" data-target="how">How It Works</div>
+          <div class="nav-link" data-target="testimonials">Testimonials</div>
+          <div class="nav-link" data-target="disclaimer">Disclaimer</div>
+        </nav>
+      </div>
+
+      <div class="nav-cta">
+        <div id="user-area" style="display:flex;gap:8px;align-items:center">
+          <div id="greeting" class="muted">Not logged in</div>
+          <button class="btn ghost" id="btn-login">Login</button>
+          <button class="btn" id="btn-register">Register</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section id="hero" class="hero" aria-label="Hero">
+      <div class="hero-left">
+        <div class="pill">Trusted by 10,000+ users worldwide</div>
+        <h1>High Quality Online SMS Verification Service</h1>
+        <p>Receive OTP to verify accounts with virtual numbers and dominate social media. Skyrocket your online presence and reach the right audience on social media.</p>
+        <div class="cta-row">
+          <button class="btn" id="btn-get-started">Get Started Now</button>
+          <button class="btn ghost" id="btn-hero-login">Login</button>
+        </div>
+        <div class="store-badge">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='42'><rect rx='6' width='140' height='42' fill='%230a2430'/><text x='20' y='26' font-family='Arial' font-size='12' fill='%23fff'>GET IT ON Google Play</text></svg>" alt="store badge" />
+        </div>
+      </div>
+      <div class="hero-right" role="img" aria-label="Illustration">
+        <!-- placeholder / can be replaced with real image -->
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='360' height='220'><rect rx='14' width='360' height='220' fill='%230a2430'/><g fill='%2338bdf8' opacity='0.95'><circle cx='180' cy='110' r='48'/></g></svg>" alt="visual" />
+      </div>
+    </section>
+
+    <!-- WHY CHOOSE -->
+    <section id="features" aria-label="Why choose" style="margin-top:36px">
+      <div class="section-head">
+        <h2>Why Choose uchenzylogs?</h2>
+        <p class="muted">Receive OTPs securely, verify accounts easily, and grow your online presence.</p>
+      </div>
+
+      <div class="cards" role="list">
+        <div class="card" role="listitem">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:44px;height:44px;border-radius:44px;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center">🌐</div>
+            <div>
+              <h3>Global Numbers</h3>
+              <p>Access virtual numbers from multiple countries for account verification.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:44px;height:44px;border-radius:44px;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center">🚀</div>
+            <div>
+              <h3>Instant Growth</h3>
+              <p>Watch your online visibility grow fast with our smart tools.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:44px;height:44px;border-radius:44px;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center">🔒</div>
+            <div>
+              <h3>Safe & Secure</h3>
+              <p>100% privacy protection with our secure verification system.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:44px;height:44px;border-radius:44px;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center">📈</div>
+            <div>
+              <h3>Engagement Growth</h3>
+              <p>Grow your online reach and strengthen audience connections.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:44px;height:44px;border-radius:44px;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center">⚡</div>
+            <div>
+              <h3>Fast Delivery</h3>
+              <p>Get results immediately after payment. No waiting time.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:44px;height:44px;border-radius:44px;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center">🎧</div>
+            <div>
+              <h3>24/7 Support</h3>
+              <p>Our team is always available to help you with any issues.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" style="margin-top:44px">
+      <div class="section-head">
+        <h2 class="center">Our Services</h2>
+        <p class="muted center">Everything you need to dominate social media</p>
+      </div>
+
+      <div class="services-grid" aria-label="Services">
+        <div class="service">
+          <h4>Mobile Virtual Numbers</h4>
+          <ul>
+            <li>Supports multiple countries (USA, UK, Canada & more)</li>
+            <li>Reliable OTP delivery</li>
+            <li>Instant activation for WhatsApp & online verifications</li>
+          </ul>
+          <div style="margin-top:10px"><a class="muted" href="#">Explore Numbers →</a></div>
+        </div>
+
+        <div class="service">
+          <h4>Social Growth Tools</h4>
+          <ul>
+            <li>Reliable growth that keeps your audience engaged</li>
+            <li>Gradual delivery for natural growth</li>
+            <li>Safe & reliable with top-tier support</li>
+          </ul>
+          <div style="margin-top:10px"><a class="muted" href="#">Start Growing →</a></div>
+        </div>
+
+        <div class="service">
+          <h4>Account Security</h4>
+          <ul>
+            <li>Keep your primary phone number private</li>
+            <li>Reduce risk of spam or unwanted contacts</li>
+            <li>24/7 availability for account verification</li>
+          </ul>
+          <div style="margin-top:10px"><a class="muted" href="#">Get Started →</a></div>
+        </div>
+
+        <div class="service">
+          <h4>Secure Transactions</h4>
+          <ul>
+            <li>Fraud protection & safe handling</li>
+            <li>Trusted by thousands of users</li>
+            <li>Instant Service Delivery</li>
+          </ul>
+          <div style="margin-top:10px"><a class="muted" href="#">Get Started →</a></div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:20px" class="center">
+        <div class="pill">More services available: Buy Foreign Numbers Mobile • Verify OTP Lock • Grow Social Media Chart • +15 others</div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" style="margin-top:44px">
+      <div class="section-head center">
+        <h2>How uchenzylogs Works</h2>
+        <p class="muted">Get results in just 3 simple steps</p>
+      </div>
+
+      <div class="how-grid" style="margin-top:20px">
+        <div class="step">
+          <div class="num">1</div>
+          <h4>Create Account</h4>
+          <p class="muted">Sign up in seconds and get instant access to our dashboard.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h4>Choose Service</h4>
+          <p class="muted">Pick from virtual numbers, social growth, and more.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h4>See Results</h4>
+          <p class="muted">See instant results with uchenzylogs services.</p>
+        </div>
+      </div>
+
+      <div class="center" style="margin-top:18px">
+        <button class="btn" id="btn-start-now">Get Started now! →</button>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" style="margin-top:44px">
+      <div class="section-head center">
+        <h2>Success Stories</h2>
+        <p class="muted">Don't just take our word for it. Here's what our clients say</p>
+      </div>
+
+      <div style="margin-top:18px">
+        <div class="test-card">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56'><rect rx='28' width='56' height='56' fill='%2338bdf8'/></svg>" alt="avatar">
+          <div>
+            <div style="font-weight:700">David M. <span class="muted" style="font-weight:600">★ ★ ★ ★ ★</span></div>
+            <div class="muted" style="margin-top:8px">"The virtual numbers work perfectly for verifying all my client accounts."</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DISCLAIMER -->
+<section id="cta" class="cta-section">
+  <h2>Ready to Dominate Social Media?</h2>
+  <p>Grow like thousands of influencers and businesses using uchenzylogs today.</p>
+  <div class="cta-buttons">
+   <a href="#top" class="btn btn-primary" id="scrollTopBtn">Get Started Free</a>
+    <a href="#" class="btn btn-outline" id="cta-login-btn">Login to Dashboard</a>
+  </div>
+</section>
+
+
+    <!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-left">
+      <h2 class="footer-logo">uchenzylogs</h2>
+      <p>Receive OTP to Verify accounts with virtual numbers and dominate social media. Grow your online presence and reach the right audience on social media.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-right">
+      <h3>Contact Us</h3>
+      <p><i class="fas fa-envelope"></i> support@uchenzylogs.com</p>
+      <p><i class="fas fa-phone"></i> +2349020588330</p>
+    </div>
+  </div>
+  <p class="footer-bottom">© 2025 uchenzylogs. All rights reserved.</p>
+</footer>
+
+  </div>
+
+  <!-- MODAL / OVERLAY -->
+  <div id="overlay" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.6);z-index:80">
+    <div style="width:100%;max-width:520px;background:#071726;border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03)" id="modal"></div>
+  </div>
+
+<script>
+/* ===========================
+   API / Demo Configuration
+   ===========================
+   Set API_BASE to your backend root URL (no trailing slash).
+   The auth endpoints used:
+     POST ${API_BASE}/auth/register  { email, password }
+     POST ${API_BASE}/auth/login     { email, password }
+     GET  ${API_BASE}/auth/me        Authorization: Bearer <token>
+   If API_BASE = '' (empty), the code will operate in demo/local fallback mode.
+*/
+const API_BASE = "http://localhost:4000";
+
+/* ===== utilities ===== */
+const $ = sel => document.querySelector(sel);
+const wait = ms => new Promise(r=>setTimeout(r,ms));
+const showModal = html => {
+  $('#modal').innerHTML = html;
+  $('#overlay').style.display = 'flex';
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+const closeModal = () => { $('#overlay').style.display='none'; $('#modal').innerHTML=''; };
+
+/* ===== header / nav behavior ===== */
+document.querySelectorAll('.nav-link').forEach(el=>{
+  el.addEventListener('click', ()=> {
+    const target = el.dataset.target;
+    const node = document.getElementById(target);
+    if(node) node.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+document.getElementById('btn-get-started').addEventListener('click', ()=> document.getElementById('services').scrollIntoView({behavior:'smooth'}));
+document.getElementById('btn-hero-login').addEventListener('click', ()=> openAuthModal('login'));
+document.getElementById('btn-start-now').addEventListener('click', ()=> openAuthModal('register'));
+document.getElementById('btn-register').addEventListener('click', ()=> openAuthModal('register'));
+document.getElementById('btn-login').addEventListener('click', ()=> openAuthModal('login'));
+document.getElementById('btn-hero-login').addEventListener('click', ()=> openAuthModal('login'));
+
+/* set current year */
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+
+/* ===========
+   AUTH / USER
+   =========== */
+let session = {
+  token: localStorage.getItem('ul_token') || null,
+  user: JSON.parse(localStorage.getItem('ul_user') || 'null')
+};
+
+function updateHeader(){
+  if(session.user){
+    $('#greeting').textContent = session.user.email;
+    $('#btn-login').style.display='none';
+    $('#btn-register').style.display='none';
+    const logoutBtn = document.createElement('button'); logoutBtn.className='btn ghost'; logoutBtn.textContent='Logout';
+    logoutBtn.addEventListener('click', logout);
+    if(!document.getElementById('logout-ctl')) { logoutBtn.id='logout-ctl'; document.getElementById('user-area').appendChild(logoutBtn); }
+  } else {
+    $('#greeting').textContent = 'Not logged in';
+    if(document.getElementById('logout-ctl')) document.getElementById('logout-ctl').remove();
+    $('#btn-login').style.display='';
+    $('#btn-register').style.display='';
+  }
+}
+updateHeader();
+function showPopup(message, isError = false) {
+  // Create popup element
+  const popup = document.createElement('div');
+  popup.textContent = message;
+  popup.style.position = 'fixed';
+  popup.style.top = '50%';
+  popup.style.left = '50%';
+  popup.style.transform = 'translate(-50%, -50%)';
+  popup.style.padding = '15px 25px';
+  popup.style.backgroundColor = isError ? '#ff4d4d' : '#4CAF50';
+  popup.style.color = 'white';
+  popup.style.fontWeight = 'bold';
+  popup.style.borderRadius = '8px';
+  popup.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)';
+  popup.style.zIndex = '10000';
+  document.body.appendChild(popup);
+
+  // Fade out after 2 seconds
+  setTimeout(() => {
+    popup.style.transition = 'opacity 0.5s';
+    popup.style.opacity = '0';
+    setTimeout(() => popup.remove(), 500);
+  }, 2000);
+}
+
+/* Attempt to call API; fallback to local demo behavior */
+async function apiPost(path, body){
+  if(!API_BASE) return { ok:false, demo:true, body };
+  try{
+    const res = await fetch(API_BASE + path, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json().catch(()=>null);
+    return { ok: res.ok, status: res.status, data };
+  }catch(err){
+    console.warn('API error', err);
+    return { ok:false, error:err };
+  }
+}
+
+async function apiGet(path, token){
+  if(!API_BASE) return { ok:false, demo:true };
+  try{
+    const res = await fetch(API_BASE + path, {
+      method:'GET',
+      headers:{ 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json().catch(()=>null);
+    return { ok: res.ok, status: res.status, data };
+  }catch(err){ return { ok:false, error:err }; }
+}
+
+/* Register (tries API, falls back to local storage demo) */
+async function registerUser(email, password){
+  const resp = await apiPost('/auth/register', { email, password });
+  if(resp.ok && resp.data){
+    // expected: { token, user: { email, ... } }
+    const token = resp.data.token || null;
+    const user = resp.data.user || { email };
+    session.token = token;
+    session.user = user;
+    localStorage.setItem('ul_token', token || 'demo-token');
+    localStorage.setItem('ul_user', JSON.stringify(user));
+    updateHeader();
+    return { ok:true, user };
+  }
+  // fallback demo mode: store user locally
+  const users = JSON.parse(localStorage.getItem('ul_users') || '[]');
+  if(users.find(u=>u.email===email)) return { ok:false, error:'User already exists (demo)' };
+  users.push({ email, password });
+  localStorage.setItem('ul_users', JSON.stringify(users));
+  session.token = 'demo-token-' + Date.now();
+  session.user = { email };
+  localStorage.setItem('ul_token', session.token);
+  localStorage.setItem('ul_user', JSON.stringify(session.user));
+  updateHeader();
+  return { ok:true, user:session.user, demo:true };
+}
+
+/* Login (tries API, falls back to local storage demo) */
+async function loginUser(email, password){
+  const resp = await apiPost('/auth/login', { email, password });
+  if(resp.ok && resp.data){
+    const token = resp.data.token || null;
+    const user = resp.data.user || { email };
+    session.token = token;
+    session.user = user;
+    localStorage.setItem('ul_token', token || 'demo-token');
+    localStorage.setItem('ul_user', JSON.stringify(user));
+    updateHeader();
+    return { ok:true, user };
+  }
+  // fallback demo login
+  const users = JSON.parse(localStorage.getItem('ul_users') || '[]');
+  const found = users.find(u=>u.email===email && u.password===password);
+  if(!found) return { ok:false, error:'Invalid credentials (demo)' };
+  session.token = 'demo-token-' + Date.now();
+  session.user = { email };
+  localStorage.setItem('ul_token', session.token);
+  localStorage.setItem('ul_user', JSON.stringify(session.user));
+  updateHeader();
+  return { ok:true, user:session.user, demo:true };
+}
+
+function logout(){
+  session.token = null; session.user = null;
+  localStorage.removeItem('ul_token'); localStorage.removeItem('ul_user');
+  updateHeader();
+  alert('Logged out');
+}
+
+/* ====== UI: auth modal ====== */
+function openAuthModal(mode='login'){
+  const title = mode === 'login' ? 'Login' : 'Register';
+  const isRegister = mode === 'register';
+
+  showModal(`
+    <h3 style="margin:0 0 6px 0">${title}</h3>
+    <div style="color:var(--muted);margin-bottom:8px">
+      ${isRegister ? 'Fill in your details to create an account' : 'Enter your email and password to log in'}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      ${isRegister ? `
+        <input id="auth-name" type="text" placeholder=" Name" 
+          style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff">
+        <input id="auth-surname" type="text" placeholder="Surname"
+          style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff">
+        <input id="auth-number" type="tel" placeholder="Phone Number"
+          style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff">
+      ` : ''}
+      <input id="auth-email" type="email" placeholder="you@example.com"
+        style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff">
+      <input id="auth-pass" type="password" placeholder="Password"
+        style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff">
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+        <button class="btn ghost" id="auth-cancel">Cancel</button>
+        <button class="btn" id="auth-submit">${title}</button>
+      </div>
+      <div class="muted" style="font-size:13px;margin-top:8px">
+        This form is API-ready. Configure <code>API_BASE</code> at top of file to use your backend.
+      </div>
+    </div>
+  `);
+
+ $('#auth-cancel').addEventListener('click', closeModal);
+
+$('#auth-submit').addEventListener('click', async () => {
+  const email = $('#auth-email')?.value.trim();
+  const pass = $('#auth-pass')?.value.trim();
+  const name = $('#auth-name')?.value.trim();
+  const surname = $('#auth-surname')?.value.trim();
+  const number = $('#auth-number')?.value.trim();
+
+  if (mode === 'register') {
+    // 🧾 Validate registration fields
+    if (!name || !surname || !number || !email || !pass) {
+      showPopup('Please fill in all fields.');
+      return;
+    }
+
+    // 📩 Register user
+    const res = await registerUser(email, pass);
+    if (res.ok) {
+      showPopup('Registration successful!');
+      closeModal();
+
+      // ✅ Automatically go to dashboard after successful registration
+      setTimeout(() => {
+        window.location.href = 'dashboard.html'; // <-- change if needed
+      }, 1200);
+    } else {
+      showPopup('Register failed: ' + (res.error || 'Unknown error'));
+    }
+  } 
+  else {
+    // 🔑 Login flow
+    if (!email || !pass) {
+      showPopup('Please enter both email and password.');
+      return;
+    }
+
+    const res = await loginUser(email, pass);
+    if (res.ok) {
+      showPopup('Login successful!');
+      closeModal();
+
+      // ✅ Redirect to dashboard after login
+      setTimeout(() => {
+        window.location.href = 'dashboard.html'; // <-- your dashboard page
+      }, 1200);
+    } else {
+      showPopup('Login failed: ' + (res.error || 'Unknown error'));
+    }
+  }
+});
+}
+/* =========================
+   Smooth "scroll to" visual cue
+   ========================= */
+const navLinks = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(l=> l.style.opacity = (l.dataset.target === e.target.id ? '1' : '0.8'));
+    }
+  });
+},{ threshold: 0.45 });
+
+['features','services','how','testimonials','disclaimer'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el) observer.observe(el);
+});
+
+/* ================
+   Small demo utilities
+   ================ */
+document.getElementById('overlay').addEventListener('click', (ev)=>{
+  if(ev.target.id === 'overlay') closeModal();
+});
+
+/* When page loads, try to verify API session (optional) */
+(async function tryMe(){
+  if(!session.token || !API_BASE) return;
+  try{
+    const me = await apiGet('/auth/me', session.token);
+    if(me.ok && me.data && me.data.user){
+      session.user = me.data.user;
+      localStorage.setItem('ul_user', JSON.stringify(session.user));
+      updateHeader();
+    }
+  }catch(err){ console.warn('me error', err); }
+})();
+</script>
+<script>
+/* =====================================
+   Floating Word Rows — Continuous Motion
+   ===================================== */
+const words = [
+  'uchenzylogs','trusted','secure','growth','innovation',
+  'otp','digital','authentic','power','service',
+  'connect','speed','vision','verify','inspire','future','reach'
+];
+
+const container = document.getElementById('floating-words');
+const rowCount = 12; // number of visible horizontal rows
+for(let i=0;i<rowCount;i++){
+  const row = document.createElement('div');
+  row.className = 'frow';
+
+  // position each row at a different vertical spot
+  row.style.top = (i * (100 / rowCount)) + 'vh';
+  
+  // vary animation speed slightly
+  const speed = 20 + Math.random() * 10; // seconds
+  row.style.animationDuration = speed + 's';
+  
+  // alternate directions for visual rhythm
+  const direction = i % 2 === 0 ? 1 : -1;
+  row.style.animationName = direction === 1 ? 'moveRow' : 'moveRowReverse';
+  if(direction === -1){
+    row.style.animationDirection = 'reverse';
+  }
+
+  // fill each line with many repeating words
+  const line = [];
+  for(let j=0;j<30;j++){
+    line.push(words[Math.floor(Math.random()*words.length)]);
+  }
+  row.textContent = line.join('   •   ');
+
+  container.appendChild(row);
+}
+
+// define reverse animation too
+const style = document.createElement('style');
+style.textContent = `
+@keyframes moveRowReverse {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100vw); }
+}`;
+document.head.appendChild(style);
+</script>
+<script>
+document.getElementById("cta-login-btn").addEventListener("click", function (e) {
+  e.preventDefault();
+  openAuthModal("login");
+});
+</script>
+
+<!-- Alert Popup -->
+<div id="popup-alert" class="popup-alert hidden">
+  <div class="popup-box">
+    <p id="popup-message"></p>
+    <button onclick="closePopup()" class="btn">OK</button>
+  </div>
+</div>
+
+</body>
+</html>

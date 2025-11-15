@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | uchenzylogs</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --text: #333;
+      --header-bg: #fff;
+      --card-bg: #fff;
+      --accent: #0a7c58;
+      --shadow: rgba(0,0,0,0.08);
+    }
+
+    body.dark {
+      --bg: #090f18;
+      --text: #e6edf3;
+      --header-bg: #161b22;
+      --card-bg: #1f242c;
+      --accent: #3cba92;
+      --shadow: rgba(0,0,0,0.4);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    header {
+      background: var(--header-bg);
+      padding: 1rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    header h1 {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.3rem;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-shrink: 0;
+    }
+
+    .profile img {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .theme-toggle {
+      background: var(--accent);
+      border: none;
+      padding: 0.45rem 0.7rem;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      margin: auto;
+      padding: 1rem;
+    }
+
+    /* WALLET */
+    .wallet-card {
+      background: linear-gradient(135deg, #0ba360, #3cba92);
+      color: #fff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 14px var(--shadow);
+      margin-top: 1rem;
+    }
+
+    .wallet-balance {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0.4rem 0;
+    }
+
+    .wallet-actions {
+      display: flex;
+      gap: 0.7rem;
+      margin-top: 0.8rem;
+    }
+
+    .wallet-actions button {
+      flex: 1;
+      background: rgba(255,255,255,0.25);
+      padding: 0.7rem;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--accent);
+      margin: 2rem 0 1rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 1rem;
+      border-radius: 14px;
+      text-align: center;
+      box-shadow: 0 4px 14px var(--shadow);
+      cursor: pointer;
+      transition: 0.25s ease;
+      font-size: 0.9rem;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 18px var(--shadow);
+    }
+
+    .card-icon {
+      font-size: 1.9rem;
+      margin-bottom: 0.4rem;
+      color: var(--accent);
+    }
+
+    .big-btn {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 12px;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .big-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* ADMIN PANEL BUTTON */
+    #adminPanelCard {
+      display: none;
+      border: 2px solid var(--accent);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 450px) {
+      header h1 {
+        font-size: 1.1rem;
+      }
+      .profile span {
+        display: none;
+      }
+      .grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      }
+      .card {
+        font-size: 0.85rem;
+        padding: 0.9rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ADMIN ICON (⚙️) — hidden by default -->
+<div id="adminIcon"
+     style="
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        background: #111;
+        color: #fff;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        cursor: pointer;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        z-index: 9999;
+     ">
+  ⚙️
+</div>
+
+<header>
+  <h1>uchenzylogs</h1>
+
+  <div class="profile">
+    <button id="themeBtn" class="theme-toggle">🌙</button>
+    <span id="username">Hi, User 👋</span>
+    <img src="/images/user.png" alt="User" />
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- WALLET -->
+  <div class="wallet-card">
+    <p>Wallet Balance</p>
+    <div id="wallet-balance" class="wallet-balance">₦0.00</div>
+
+    <div class="wallet-actions">
+      <button id="addMoneyBtn">+ Add Money</button>
+      <button id="historyBtn">History</button>
+    </div>
+  </div>
+
+  <h2>Main Services</h2>
+  <div class="grid">
+    <div class="card" id="foreignNumbersCard"><div class="card-icon">🌍</div>Foreign Numbers</div>
+    <div class="card" id="boostOrdersCard"><div class="card-icon">📈</div>Boost Accounts</div>
+    <div class="card" id="buyAirtimeCard"><div class="card-icon">📱</div>Buy Airtime</div>
+    <div class="card" id="buyDataCard"><div class="card-icon">📶</div>Buy Data</div>
+    <div class="card" id="buyLogCard"><div class="card-icon">📓</div>Buy Log</div>
+    <div class="card" id="rentNumberCard"><div class="card-icon">🏠</div>Rent Number</div>
+    <div class="card" id="buyProxyCard"><div class="card-icon">🔒</div>Buy Proxy</div>
+    <div class="card" id="buyVpnCard"><div class="card-icon">🛡️</div>Buy VPN</div>
+    <div class="card" id="disposableEmailCard"><div class="card-icon">📧</div>Disposable Email (FREE)</div>
+  </div>
+
+  <a href="https://chat.whatsapp.com/ENFlWTMd0JNFDjxFFYJzf3" target="_blank">
+    <button class="big-btn">💬 Join WhatsApp Community</button>
+  </a>
+
+  <button class="big-btn" id="netflixBtn">🎬 Get Netflix Log</button>
+
+  <h2>More Features</h2>
+  <div class="grid">
+    <div class="card" id="referEarnCard">🎁 Refer & Earn</div>
+    <div class="card" id="supportCard">💡 Support</div>
+    <div class="card" id="historyCard">📜 History</div>
+    <div class="card" id="profileCard">👤 Profile</div>
+    <div class="card" id="logoutCard">🚪 Logout</div>
+
+    <!-- ADMIN PANEL BUTTON -->
+    <div class="card" id="adminPanelCard">🛠️ Admin Panel</div>
+  </div>
+
+</div>
+
+<!-- SCRIPTS -->
+<script src="/scripts/sweetalert2.all.min.js"></script>
+<script src="/scripts/dashboard.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const themeBtn = document.getElementById("themeBtn");
+
+    // Load saved theme
+    let savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark");
+      themeBtn.textContent = "☀️";
+    } else {
+      themeBtn.textContent = "🌙";
+    }
+
+    // Toggle theme
+    themeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+
+      const isDark = document.body.classList.contains("dark");
+
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+
+      themeBtn.textContent = isDark ? "☀️" : "🌙";
+    });
+  });
+</script>
+<script>
+  /* THEME */
+  const themeBtn = document.getElementById("themeBtn");
+  const savedTheme = localStorage.getItem("theme");
+
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+    themeBtn.textContent = "☀️";
+  }
+
+  themeBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    const isDark = document.body.classList.contains("dark");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+    themeBtn.textContent = isDark ? "☀️" : "🌙";
+  });
+
+  /* ============================
+       ADMIN MODE FIXED
+     ============================ */
+
+  const isAdmin = localStorage.getItem("admin") === "true";
+
+  if (isAdmin) {
+    // Show admin grid button
+    document.getElementById("adminPanelCard").style.display = "block";
+
+    // Show floating admin icon
+    document.getElementById("adminIcon").style.display = "flex";
+  }
+
+  // Admin icon redirect
+  document.getElementById("adminIcon").addEventListener("click", () => {
+    window.location.href = "/admin.html";
+  });
+
+  // Admin panel grid button redirect
+  document.getElementById("adminPanelCard").addEventListener("click", () => {
+    window.location.href = "/admin-panel.html";
+  });
+</script>
+<script>
+  /* ============================
+      HIDE FEATURES FROM ADMIN PANEL
+     ============================ */
+
+  const controls = JSON.parse(localStorage.getItem("adminControls")) || {};
+
+  const map = {
+    boostAccount: "boostOrdersCard",
+    foreignNumbers: "foreignNumbersCard",
+    buyAirtime: "buyAirtimeCard",
+    buyData: "buyDataCard",
+    buyLog: "buyLogCard",
+    rentNumber: "rentNumberCard",
+    buyProxy: "buyProxyCard",
+    buyVpn: "buyVpnCard",
+    disposableEmail: "disposableEmailCard",
+    referEarn: "referEarnCard",
+    support: "supportCard",
+    userHistory: "historyCard",
+    profile: "profileCard",
+    logout: "logoutCard"
+  };
+
+  Object.keys(map).forEach(feature => {
+    const elementId = map[feature];
+    const el = document.getElementById(elementId);
+
+    if (el) {
+      if (controls[feature] === false) {
+        el.style.display = "none";
+      } else {
+        el.style.display = "block";
+      }
+    }
+  });
+</script>
+
+
+</body>
+</html>

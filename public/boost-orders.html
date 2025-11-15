@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boost Orders | uchenzylogs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #f4f4f4;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .form-card {
+      background: #fff;
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .form-card h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    /* Placeholder style for boost order items */
+    .order-item {
+      background: #fafafa;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #e6e6e6;
+      font-size: 14px;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 20px;
+      }
+
+      .form-card {
+        padding: 16px;
+      }
+
+      .form-card h2 {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Boost Orders</h1>
+  </header>
+
+  <div class="container">
+    <div class="form-card">
+      <h2>Your Boost Orders</h2>
+
+      <!-- Orders container -->
+      <div id="ordersList">
+        <!-- Orders will appear here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Example placeholder data - replace with backend API later
+    const sampleOrders = [
+      { id: 1, service: "Instagram Boost", status: "Completed", amount: "₦1500" },
+      { id: 2, service: "Facebook Page Boost", status: "Pending", amount: "₦3000" }
+    ];
+
+    const ordersList = document.getElementById("ordersList");
+
+    // Load orders
+    function loadOrders() {
+      ordersList.innerHTML = "";
+
+      sampleOrders.forEach(order => {
+        const item = document.createElement("div");
+        item.className = "order-item";
+        item.innerHTML = `
+          <strong>Service:</strong> ${order.service}<br>
+          <strong>Status:</strong> ${order.status}<br>
+          <strong>Amount:</strong> ${order.amount}
+        `;
+        ordersList.appendChild(item);
+      });
+    }
+
+    loadOrders();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boost Account | uchenzylogs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #f4f4f4;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .form-card {
+      background: #fff;
+      width: 100%;
+      max-width: 420px;
+      padding: 22px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .form-card h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    label {
+      font-size: 14px;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #007bff;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      background: #0066d3;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 21px;
+      }
+
+      .form-card {
+        padding: 18px;
+      }
+
+      .form-card h2 {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Boost Account</h1>
+  </header>
+
+  <div class="container">
+    <div class="form-card">
+      <h2>Boost Your Account</h2>
+
+      <!-- Example fields -->
+      <label for="platform">Select Platform</label>
+      <select id="platform">
+        <option value="facebook">Facebook</option>
+        <option value="instagram">Instagram</option>
+        <option value="tiktok">TikTok</option>
+        <option value="twitter">Twitter (X)</option>
+      </select>
+
+      <label for="amount">Amount to Spend (₦)</label>
+      <input type="number" id="amount" placeholder="Enter amount">
+
+      <button id="boostAccountBtn">Boost Account</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("boostAccountBtn").addEventListener("click", () => {
+      const platform = document.getElementById("platform").value;
+      const amount = document.getElementById("amount").value;
+
+      if (!amount.trim()) {
+        alert("Please enter an amount.");
+        return;
+      }
+
+      alert(`Boost request submitted!\nPlatform: ${platform}\nAmount: ₦${amount}`);
+    });
+  </script>
+
+</body>
+</html>

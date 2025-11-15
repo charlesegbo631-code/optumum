@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foreign Numbers | uchenzylogs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="/scripts/sweetalert2.all.min.js" defer></script>
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --text: #333;
+      --card-bg: #fff;
+      --accent: #0a7c58;
+      --shadow: rgba(0, 0, 0, 0.05);
+    }
+
+    body.dark {
+      --bg: #0a101a;
+      --text: #e6edf3;
+      --card-bg: #1c2128;
+      --accent: #3cba92;
+      --shadow: rgba(0, 0, 0, 0.4);
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 1.2rem;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--accent);
+      margin: 1rem 0 1.5rem 0;
+      font-size: 1.6rem;
+    }
+
+    /* ⭐ Responsive Grid */
+    .country-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .country-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    .country-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .country-flag {
+      font-size: 2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    /* ⭐ Mobile-first theme button */
+    #themeBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--accent);
+      border: none;
+      padding: 0.8rem 1.2rem;
+      border-radius: 50px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 10px var(--shadow);
+      z-index: 999;
+      transition: 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    #themeBtn:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    /* ⭐ Extra mobile tweaks */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.4rem;
+      }
+      .country-card {
+        padding: 0.8rem;
+      }
+      .country-flag {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Prevent theme flash -->
+  <script>
+    (() => {
+      const savedTheme = localStorage.getItem("theme") || "light";
+      if (savedTheme === "dark") document.body.classList.add("dark");
+    })();
+  </script>
+
+  <button id="themeBtn"></button>
+
+  <h1>🌍 Choose a Country</h1>
+  <div class="country-grid" id="countryGrid"></div>
+
+  <script>
+    // THEME LOGIC
+    document.addEventListener("DOMContentLoaded", () => {
+      const themeBtn = document.getElementById("themeBtn");
+      const setThemeText = () => {
+        themeBtn.textContent = document.body.classList.contains("dark")
+          ? "Light Mode"
+          : "Dark Mode";
+      };
+
+      setThemeText();
+      themeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        const isDark = document.body.classList.contains("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+        setThemeText();
+      });
+    });
+
+    // COUNTRY GRID
+    document.addEventListener("DOMContentLoaded", () => {
+      const countryGrid = document.getElementById("countryGrid");
+      const countries = [
+        { name: "United States", flag: "🇺🇸" },
+        { name: "United Kingdom", flag: "🇬🇧" },
+        { name: "Canada", flag: "🇨🇦" },
+        { name: "Nigeria", flag: "🇳🇬" },
+        { name: "Ghana", flag: "🇬🇭" },
+        { name: "India", flag: "🇮🇳" },
+        { name: "South Africa", flag: "🇿🇦" },
+        { name: "Kenya", flag: "🇰🇪" },
+        { name: "Germany", flag: "🇩🇪" },
+        { name: "France", flag: "🇫🇷" }
+      ];
+
+      countries.forEach(c => {
+        const card = document.createElement("div");
+        card.className = "country-card";
+        card.innerHTML = `
+          <div class="country-flag">${c.flag}</div>
+          <div class="country-name">${c.name}</div>
+        `;
+        card.addEventListener("click", () => {
+          Swal.fire({
+            title: c.name,
+            text: "Fetching available numbers...",
+            icon: "info",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        });
+        countryGrid.appendChild(card);
+      });
+    });
+  </script>
+
+</body>
+</html>

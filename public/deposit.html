@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Money | uchenzylogs</title>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --text: #333;
+      --card-bg: #fff;
+      --accent: #0a7c58;
+      --shadow: rgba(0,0,0,0.1);
+    }
+
+    body.dark {
+      --bg: #090f18;
+      --text: #e6edf3;
+      --card-bg: #1f242c;
+      --accent: #3cba92;
+      --shadow: rgba(0,0,0,0.4);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .box {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px var(--shadow);
+      text-align: center;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    input {
+      width: 100%;
+      padding: 0.9rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      margin: 1rem 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 1rem;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: var(--card-bg);
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 2px 10px var(--shadow);
+      color: var(--text);
+    }
+
+    @media (max-width: 500px) {
+      .box {
+        padding: 1.5rem;
+        border-radius: 10px;
+      }
+      input, button {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Theme Toggle -->
+  <button id="themeBtn" class="theme-toggle">🌙 Dark Mode</button>
+
+  <div class="box">
+    <h2>Deposit Funds</h2>
+    <p>Enter the amount you want to add:</p>
+
+    <input type="number" id="amount" placeholder="Amount in ₦" />
+
+    <button id="payBtn">Pay Now</button>
+  </div>
+
+
+  <script>
+    // ---------------- THEME ----------------
+    document.addEventListener("DOMContentLoaded", () => {
+      const themeBtn = document.getElementById("themeBtn");
+
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") {
+        document.body.classList.add("dark");
+        themeBtn.textContent = "☀️ Light Mode";
+      }
+
+      themeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+
+        const enabled = document.body.classList.contains("dark");
+        localStorage.setItem("theme", enabled ? "dark" : "light");
+
+        themeBtn.textContent = enabled
+          ? "☀️ Light Mode"
+          : "🌙 Dark Mode";
+      });
+    });
+
+
+    // ---------------- PAYSTACK ----------------
+    document.getElementById("payBtn").addEventListener("click", () => {
+      const token = localStorage.getItem("ul_token");
+      const user = JSON.parse(localStorage.getItem("ul_user"));
+      if (!token || !user) {
+        alert("Please log in first.");
+        window.location.href = "/login.html";
+        return;
+      }
+
+      const amount = document.getElementById("amount").value;
+      if (!amount || amount <= 0) {
+        alert("Enter a valid amount");
+        return;
+      }
+
+      const handler = PaystackPop.setup({
+        key: "pk_test_xxxxxxxxxxxxxxxxxxxxxxxx", // Replace
+        email: user.email,
+        amount: amount * 100,
+        currency: "NGN",
+
+        callback: async function(response) {
+          try {
+            const res = await fetch("/wallet/paystack/verify", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+              },
+              body: JSON.stringify({ reference: response.reference })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+              alert("✅ Deposit successful!");
+              window.location.href = "/dashboard.html";
+            } else {
+              alert("❌ " + data.error);
+            }
+          } catch (err) {
+            alert("Error verifying payment");
+          }
+        },
+
+        onClose: function() {
+          alert("Transaction cancelled.");
+        }
+      });
+
+      handler.openIframe();
+    });
+  </script>
+
+</body>
+</html>

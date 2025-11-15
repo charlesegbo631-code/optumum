@@ -1,0 +1,67 @@
+[35mnode_modules/.package-lock.json[m[36m:[m[32m1840[m[36m:[m    "node_modules/n[1;31mapi[m-build-utils": {
+[35mnode_modules/.package-lock.json[m[36m:[m[32m1842[m[36m:[m      "resolved": "https://registry.npmjs.org/n[1;31mapi[m-build-utils/-/n[1;31mapi[m-build-utils-2.0.0.tgz",
+[35mnode_modules/.package-lock.json[m[36m:[m[32m1867[m[36m:[m    "node_modules/node-addon-[1;31mapi[m": {
+[35mnode_modules/.package-lock.json[m[36m:[m[32m1869[m[36m:[m      "resolved": "https://registry.npmjs.org/node-addon-[1;31mapi[m/-/node-addon-[1;31mapi[m-7.1.1.tgz",
+[35mnode_modules/.package-lock.json[m[36m:[m[32m2142[m[36m:[m        "n[1;31mapi[m-build-utils": "^2.0.0",
+[35mnode_modules/.package-lock.json[m[36m:[m[32m2654[m[36m:[m        "node-addon-[1;31mapi[m": "^7.0.0",
+[35mnode_modules/@gar/promisify/README.md[m[36m:[m[32m17[m[36m:[mfunctions](https://nodejs.org/[1;31mapi[m/util.html#util_custom_promisified_functions)
+[35mnode_modules/@gar/promisify/package.json[m[36m:[m[32m13[m[36m:[m    "test": "lab -a @h[1;31mapi[m/code -t 100",
+[35mnode_modules/@gar/promisify/package.json[m[36m:[m[32m28[m[36m:[m    "@h[1;31mapi[m/code": "^8.0.1",
+[35mnode_modules/@gar/promisify/package.json[m[36m:[m[32m29[m[36m:[m    "@h[1;31mapi[m/lab": "^24.1.0",
+[35mnode_modules/@npmcli/fs/lib/cp/polyfill.js[m[36m:[m[32m345[m[36m:[m  // (See https://nodejs.org/[1;31mapi[m/fs.html#fs_stat_time_values)
+[35mnode_modules/@npmcli/move-file/README.md[m[36m:[m[32m9[m[36m:[m[`fs.rename()`](https://nodejs.org/[1;31mapi[m/fs.html#fs_fs_rename_oldpath_newpath_callback)
+[35mnode_modules/@npmcli/move-file/README.md[m[36m:[m[32m16[m[36m:[m- Promise [1;31mAPI[m.
+[35mnode_modules/@npmcli/move-file/README.md[m[36m:[m[32m40[m[36m:[m## [1;31mAPI[m
+[35mnode_modules/abbrev/README.md[m[36m:[m[32m3[m[36m:[mJust like [ruby's Abbrev](http://[1;31mapi[mdock.com/ruby/Abbrev).
+[35mnode_modules/accepts/README.md[m[36m:[m[32m30[m[36m:[m## [1;31mAPI[m
+[35mnode_modules/agent-base/README.md[m[36m:[m[32m44[m[36m:[mvar endpoint = 'http://nodejs.org/[1;31mapi[m/';
+[35mnode_modules/agent-base/README.md[m[36m:[m[32m85[m[36m:[m[1;31mAPI[m
+[35mnode_modules/agent-base/README.md[m[36m:[m[32m145[m[36m:[m[http.Agent]: https://nodejs.org/[1;31mapi[m/http.html#http_class_http_agent
+[35mnode_modules/agent-base/dist/src/index.d.ts[m[36m:[m[32m40[m[36m:[m     * @[1;31mapi[m public
+[35mnode_modules/agent-base/dist/src/index.d.ts[m[36m:[m[32m71[m[36m:[m         * @[1;31mapi[m public
+[35mnode_modules/agent-base/dist/src/index.js[m[36m:[m[32m27[m[36m:[m     * @[1;31mapi[m public
+[35mnode_modules/agent-base/dist/src/index.js[m[36m:[m[32m79[m[36m:[m         * @[1;31mapi[m public
+[35mnode_modules/agent-base/dist/src/index.js[m[36m:[m[32m108[m[36m:[m            // XXX: non-documented `http` module [1;31mAPI[m :(
+[35mnode_modules/agent-base/node_modules/debug/README.md[m[36m:[m[32m178[m[36m:[m[`util.inspect()`](https://nodejs.org/[1;31mapi[m/util.html#util_util_inspect_object_options)
+[35mnode_modules/agent-base/node_modules/debug/src/browser.js[m[36m:[m[32m146[m[36m:[m * @[1;31mapi[m public
+[35mnode_modules/agent-base/node_modules/debug/src/browser.js[m[36m:[m[32m190[m[36m:[m * @[1;31mapi[m public
+[35mnode_modules/agent-base/node_modules/debug/src/browser.js[m[36m:[m[32m198[m[36m:[m * @[1;31mapi[m private
+[35mnode_modules/agent-base/node_modules/debug/src/browser.js[m[36m:[m[32m217[m[36m:[m * @[1;31mapi[m private
+[35mnode_modules/agent-base/node_modules/debug/src/browser.js[m[36m:[m[32m244[m[36m:[m * @[1;31mapi[m private
+[35mnode_modules/agent-base/node_modules/debug/src/common.js[m[36m:[m[32m39[m[36m:[m	* @[1;31mapi[m private
+[35mnode_modules/agent-base/node_modules/debug/src/common.js[m[36m:[m[32m58[m[36m:[m	* @[1;31mapi[m public
+[35mnode_modules/agent-base/node_modules/debug/src/common.js[m[36m:[m[32m160[m[36m:[m	* @[1;31mapi[m public
+[35mnode_modules/agent-base/node_modules/debug/src/common.js[m[36m:[m[32m231[m[36m:[m	* @[1;31mapi[m public
+[35mnode_modules/agent-base/node_modules/debug/src/common.js[m[36m:[m[32m247[m[36m:[m	* @[1;31mapi[m public
+[35mnode_modules/agent-base/node_modules/debug/src/common.js[m[36m:[m[32m270[m[36m:[m	* @[1;31mapi[m private
+[35mnode_modules/agent-base/node_modules/debug/src/node.js[m[36m:[m[32m164[m[36m:[m * @[1;31mapi[m public
+[35mnode_modules/agent-base/node_modules/debug/src/node.js[m[36m:[m[32m201[m[36m:[m * @[1;31mapi[m private
+[35mnode_modules/agent-base/node_modules/debug/src/node.js[m[36m:[m[32m217[m[36m:[m * @[1;31mapi[m private
+[35mnode_modules/agent-base/node_modules/ms/index.js[m[36m:[m[32m23[m[36m:[m * @[1;31mapi[m public
+[35mnode_modules/agent-base/node_modules/ms/index.js[m[36m:[m[32m45[m[36m:[m * @[1;31mapi[m private
+[35mnode_modules/agent-base/node_modules/ms/index.js[m[36m:[m[32m110[m[36m:[m * @[1;31mapi[m private
+[35mnode_modules/agent-base/node_modules/ms/index.js[m[36m:[m[32m135[m[36m:[m * @[1;31mapi[m private
+[35mnode_modules/agent-base/src/index.ts[m[36m:[m[32m89[m[36m:[m	 * @[1;31mapi[m public
+[35mnode_modules/agent-base/src/index.ts[m[36m:[m[32m190[m[36m:[m		 * @[1;31mapi[m public
+[35mnode_modules/agent-base/src/index.ts[m[36m:[m[32m226[m[36m:[m			// XXX: non-documented `http` module [1;31mAPI[m :(
+[35mnode_modules/agentkeepalive/README.md[m[36m:[m[32m46[m[36m:[m    The default [server-side timeout](https://nodejs.org/[1;31mapi[m/http.html#serverkeepalivetimeout) is 5000 milliseconds, to [avoid ECONNRESET exceptions](https://medium.com/ssense-tech/reduce-networking-errors-in-nodejs-23b4eb9f2d83), we set the default value to `4000` milliseconds.
+[35mnode_modules/agentkeepalive/browser.js[m[36m:[m[32m4[m[36m:[m// Noop function for browser since native [1;31mapi[m's don't use agents.
+[35mnode_modules/agentkeepalive/lib/agent.js[m[36m:[m[32m42[m[36m:[m    // Legacy [1;31mAPI[m: keepAliveTimeout should be rename to `freeSocketTimeout`
+[35mnode_modules/agentkeepalive/lib/agent.js[m[36m:[m[32m48[m[36m:[m    // Legacy [1;31mAPI[m: freeSocketKeepAliveTimeout should be rename to `freeSocketTimeout`
+[35mnode_modules/agentkeepalive/lib/agent.js[m[36m:[m[32m354[m[36m:[m        // https://nodejs.org/dist/latest-v10.x/docs/[1;31mapi[m/net.html#net_socket_settimeout_timeout_callback
+[35mnode_modules/aggregate-error/readme.md[m[36m:[m[32m50[m[36m:[m## [1;31mAPI[m
+[35mnode_modules/ansi-regex/readme.md[m[36m:[m[32m35[m[36m:[m## [1;31mAPI[m
+[35mnode_modules/aproba/README.md[m[36m:[m[32m70[m[36m:[myour [1;31mAPI[m when you do this sort of thing.
+[35mnode_modules/asynckit/lib/abort.js[m[36m:[m[32m1[m[36m:[m// [1;31mAPI[m
+[35mnode_modules/asynckit/lib/async.js[m[36m:[m[32m3[m[36m:[m// [1;31mAPI[m
+[35mnode_modules/asynckit/lib/iterate.js[m[36m:[m[32m5[m[36m:[m// [1;31mAPI[m
+[35mnode_modules/asynckit/lib/readable_asynckit.js[m[36m:[m[32m5[m[36m:[m// [1;31mAPI[m
+[35mnode_modules/asynckit/lib/readable_parallel.js[m[36m:[m[32m3[m[36m:[m// [1;31mAPI[m
+[35mnode_modules/asynckit/lib/readable_serial.js[m[36m:[m[32m3[m[36m:[m// [1;31mAPI[m
+[35mnode_modules/asynckit/lib/readable_serial_ordered.js[m[36m:[m[32m3[m[36m:[m// [1;31mAPI[m
+[35mnode_modules/asynckit/lib/state.js[m[36m:[m[32m1[m[36m:[m// [1;31mAPI[m
+[35mnode_modules/asynckit/lib/streamify.js[m[36m:[m[32m3[m[36m:[m// [1;31mAPI[m
+[35mnode_modules/asynckit/lib/streamify.js[m[36m:[m[32m5[m[36m:[m  iterator: wr[1;31mapI[mterator,
+[35mnode_modules/asynckit/lib/streamify.js[m[36m:[m[32m16[m[36m:[mfunction wr[1;31mapI[mterator(iterator)
+[35mnode_modules/asynckit/lib/streamify.js[m[36m:[m[32m23[m[36m:[m      , wrappedCb = async(wr[1;31mapI[mteratorCallback.call(stream, cb, key))
+[35mnode_modules/asynckit
