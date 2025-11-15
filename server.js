@@ -422,7 +422,13 @@ app.post("/auth/login", async (req, res) => {
     if (!ok) return res.status(401).json({ error: "Invalid credentials" });
 
     const user = { id: row.id, email: row.email, created_at: row.created_at };
+    
+    // Generate the token
     const token = createToken(user);
+    
+    // Log the generated token to debug
+    console.log("Generated Token:", token); // <-- Add this line to log the token
+
     res.json({ token, user });
   } catch (err) {
     console.error("LOGIN ERROR:", err);
