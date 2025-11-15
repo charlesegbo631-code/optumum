@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buy Logs | uchenzylogs</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --text: #333;
+      --card-bg: #fff;
+      --accent: #0a7c58;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark {
+      --bg: #0a101a;
+      --text: #e6edf3;
+      --card-bg: #1c2128;
+      --accent: #3cba92;
+      --shadow: rgba(0, 0, 0, 0.4);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      padding: 1.5rem;
+      transition: 0.3s;
+    }
+
+    header h1 {
+      text-align: center;
+      color: var(--accent);
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .form-card {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 500px;
+      padding: 1.8rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px var(--shadow);
+      animation: fadeIn 0.4s ease;
+    }
+
+    h2 {
+      margin-bottom: 1.2rem;
+      color: var(--accent);
+      font-size: 1.2rem;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 1rem;
+      display: block;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      background: var(--card-bg);
+      color: var(--text);
+      transition: 0.3s;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 0.95rem;
+      font-size: 1rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+
+<script>
+(() => {
+  const saved = localStorage.getItem("theme") || "light";
+  if (saved === "dark") document.body.classList.add("dark");
+})();
+</script>
+
+  <header>
+    <h1>Buy Logs</h1>
+  </header>
+
+  <div class="container">
+    <div class="form-card">
+      <h2>Select Log Type</h2>
+
+      <label for="logType">Choose Log</label>
+      <select id="logType">
+        <option value="">-- Select Log Type --</option>
+        <option value="fullz">Fullz</option>
+        <option value="bank">Bank Logs</option>
+        <option value="paypal">PayPal Logs</option>
+        <option value="crypto">Crypto Wallet Logs</option>
+      </select>
+
+      <button id="buyLogsBtn">Buy Logs</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("buyLogsBtn").addEventListener("click", () => {
+      const type = document.getElementById("logType").value;
+
+      if (!type) {
+        alert("Please select a log type.");
+        return;
+      }
+
+      alert(`${type} logs purchased! (Implement backend next)`);
+    });
+  </script>
+
+</body>
+</html>

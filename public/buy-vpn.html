@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buy VPN | uchenzylogs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Local SweetAlert2 -->
+  <script src="/scripts/sweetalert2.all.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --text: #333;
+      --card-bg: #fff;
+      --accent: #0a7c58;
+      --shadow: rgba(0, 0, 0, 0.08);
+    }
+
+    body.dark {
+      --bg: #0a101a;
+      --text: #e6edf3;
+      --card-bg: #1c2128;
+      --accent: #3cba92;
+      --shadow: rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 1.5rem;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 1.8rem;
+      border-radius: 12px;
+      box-shadow: 0px 4px 20px var(--shadow);
+      max-width: 480px;
+      margin: 0 auto;
+      transition: background 0.3s;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: var(--accent);
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 1rem;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.9rem;
+      margin-top: 0.4rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      background: var(--card-bg);
+      color: var(--text);
+      transition: 0.3s;
+    }
+
+    select:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    button {
+      background: var(--accent);
+      color: #fff;
+      padding: 1rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 1.8rem;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    /* MOBILE IMPROVEMENTS */
+    @media (max-width: 450px) {
+      body {
+        padding: 1rem;
+      }
+      .card {
+        padding: 1.3rem;
+        border-radius: 10px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      button {
+        padding: 0.9rem;
+        font-size: 1rem;
+      }
+      select {
+        padding: 0.8rem;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Apply theme instantly before content loads -->
+<script>
+(() => {
+  const savedTheme = localStorage.getItem("theme") || "light";
+  if (savedTheme === "dark") document.body.classList.add("dark");
+})();
+</script>
+
+<h1>Buy VPN</h1>
+
+<div class="card">
+  <h2>Select VPN Plan</h2>
+
+  <form id="vpnForm">
+    <label for="vpnType">Choose VPN Plan</label>
+
+    <select id="vpnType" required>
+      <option value="basic">Basic — ₦500</option>
+      <option value="premium">Premium — ₦1,500</option>
+      <option value="business">Business — ₦3,500</option>
+    </select>
+
+    <button type="submit" id="buyVpnBtn">Buy VPN</button>
+  </form>
+</div>
+
+<script>
+document.getElementById("vpnForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    Swal.fire("Login Required", "Please log in to continue.", "warning")
+      .then(() => window.location.href = "/login.html");
+    return;
+  }
+
+  const plan = document.getElementById("vpnType").value;
+
+  Swal.fire({
+    title: "Processing...",
+    text: "Creating your VPN account...",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  try {
+    const res = await fetch("http://localhost:4000/vpn/buy", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ plan })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      Swal.fire("Error", data.error || "Failed to buy VPN", "error");
+      return;
+    }
+
+    // Generate downloadable .conf file
+    const blob = new Blob([data.client_config], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `vpn-${plan}.conf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    Swal.fire({
+      icon: "success",
+      title: "VPN Purchased!",
+      html: `
+        <b>Plan:</b> ${plan}<br>
+        <b>Your VPN is ready.</b><br><br>
+        Your WireGuard config file has been downloaded.<br>
+        Import it into the WireGuard app.
+      `
+    });
+
+  } catch (err) {
+    Swal.fire("Error", err.message, "error");
+  }
+});
+</script>
+
+</body>
+</html>

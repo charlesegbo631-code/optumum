@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | uchenzylogs</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: Poppins, sans-serif;
+      background: #f4f6f9;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0a7c58;
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #e6e6e6;
+    }
+
+    label {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.4);
+      cursor: pointer;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 16px;
+      background: #0a7c58;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Admin Panel</h1>
+
+  <div class="card">
+    <h3>Toggle Dashboard Features</h3>
+
+    <div class="toggle-row">
+      <label>Boost Account</label>
+      <input type="checkbox" id="boostAccount">
+    </div>
+
+    <div class="toggle-row">
+      <label>Foreign Numbers</label>
+      <input type="checkbox" id="foreignNumbers">
+    </div>
+
+    <div class="toggle-row">
+      <label>Buy Airtime</label>
+      <input type="checkbox" id="buyAirtime">
+    </div>
+
+    <div class="toggle-row">
+      <label>Buy Data</label>
+      <input type="checkbox" id="buyData">
+    </div>
+
+    <div class="toggle-row">
+      <label>Buy Log</label>
+      <input type="checkbox" id="buyLog">
+    </div>
+
+    <div class="toggle-row">
+      <label>Rent Number</label>
+      <input type="checkbox" id="rentNumber">
+    </div>
+
+    <div class="toggle-row">
+      <label>Buy Proxy</label>
+      <input type="checkbox" id="buyProxy">
+    </div>
+
+    <div class="toggle-row">
+      <label>Buy VPN</label>
+      <input type="checkbox" id="buyVpn">
+    </div>
+
+    <div class="toggle-row">
+      <label>Disposable Email</label>
+      <input type="checkbox" id="disposableEmail">
+    </div>
+
+    <div class="toggle-row">
+      <label>Refer & Earn</label>
+      <input type="checkbox" id="referEarn">
+    </div>
+
+    <div class="toggle-row">
+      <label>Support</label>
+      <input type="checkbox" id="support">
+    </div>
+
+    <div class="toggle-row">
+      <label>History</label>
+      <input type="checkbox" id="userHistory">
+    </div>
+
+    <div class="toggle-row">
+      <label>Profile</label>
+      <input type="checkbox" id="profile">
+    </div>
+
+    <div class="toggle-row">
+      <label>Logout</label>
+      <input type="checkbox" id="logout">
+    </div>
+
+  </div>
+
+  <button id="saveBtn">Save Settings</button>
+
+  <script>
+    const features = [
+      "boostAccount",
+      "foreignNumbers",
+      "buyAirtime",
+      "buyData",
+      "buyLog",
+      "rentNumber",
+      "buyProxy",
+      "buyVpn",
+      "disposableEmail",
+      "referEarn",
+      "support",
+      "userHistory",
+      "profile",
+      "logout"
+    ];
+
+    // Load settings
+    const saved = JSON.parse(localStorage.getItem("adminControls")) || {};
+
+    features.forEach(feature => {
+      const checkbox = document.getElementById(feature);
+      checkbox.checked = saved[feature] !== false;
+    });
+
+    // Save new settings
+    document.getElementById("saveBtn").onclick = () => {
+      const newSettings = {};
+
+      features.forEach(feature => {
+        newSettings[feature] = document.getElementById(feature).checked;
+      });
+
+      localStorage.setItem("adminControls", JSON.stringify(newSettings));
+      alert("Settings saved!");
+    };
+  </script>
+
+</body>
+</html>

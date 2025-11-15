@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Number Orders | uchenzylogs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --text: #333;
+      --card: #fff;
+      --accent: #0a7c58;
+    }
+
+    body.dark {
+      --bg: #0a101a;
+      --text: #e6edf3;
+      --card: #1c2128;
+      --accent: #3cba92;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      transition: 0.3s ease;
+    }
+
+    header {
+      background: var(--accent);
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 1.5rem auto;
+      padding: 1rem;
+    }
+
+    .form-card {
+      background: var(--card);
+      padding: 1.5rem;
+      border-radius: 14px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+
+    .order-list {
+      margin-top: 1rem;
+    }
+
+    .order-item {
+      background: var(--bg);
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .order-item strong {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .loading {
+      opacity: 0.6;
+      font-style: italic;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 480px) {
+      header {
+        font-size: 1.2rem;
+        padding: 0.9rem;
+      }
+      .form-card {
+        padding: 1.2rem;
+      }
+      .order-item {
+        font-size: 0.9rem;
+        padding: 0.9rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>Number Orders</header>
+
+  <div class="container">
+    <div class="form-card">
+      <h2>Your Number Orders</h2>
+      <div id="orderList" class="order-list">
+        <p class="loading">Loading your orders...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem("token");
+    const api = "http://localhost:4000";
+
+    if (!token) {
+      window.location.href = "/login.html";
+    }
+
+    async function loadOrders() {
+      const list = document.getElementById("orderList");
+
+      try {
+        const res = await fetch(api + "/numbers/orders", {
+          headers: { Authorization: "Bearer " + token }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          list.innerHTML = "<p class='loading'>Failed to load orders.</p>";
+          return;
+        }
+
+        if (data.length === 0) {
+          list.innerHTML = "<p class='loading'>No number orders found.</p>";
+          return;
+        }
+
+        list.innerHTML = "";
+
+        data.forEach(order => {
+          const item = document.createElement("div");
+          item.className = "order-item";
+
+          item.innerHTML = `
+            <strong>Order ID: ${order.id}</strong>
+            Service: ${order.service}<br>
+            Number: ${order.phone}<br>
+            Status: <b>${order.status}</b><br>
+            Created: ${new Date(order.created_at).toLocaleString()}
+          `;
+
+          list.appendChild(item);
+        });
+
+      } catch (err) {
+        list.innerHTML = `<p class="loading">Error: ${err.message}</p>`;
+      }
+    }
+
+    loadOrders();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>History | uchenzylogs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #f5f5f5;
+      color: #111;
+      transition: 0.3s;
+      padding: 14px;
+    }
+
+    body.dark {
+      background: #0f0f0f;
+      color: #e4e4e4;
+    }
+
+    header {
+      padding: 20px 0;
+      text-align: center;
+      font-size: 26px;
+      font-weight: 600;
+    }
+
+    #themeBtn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: #222;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 30px;
+      cursor: pointer;
+      border: none;
+      z-index: 1000;
+      font-size: 14px;
+      transition: 0.25s;
+    }
+
+    body.dark #themeBtn {
+      background: #eee;
+      color: #000;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+
+    .form-card {
+      background: #fff;
+      padding: 22px;
+      border-radius: 12px;
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+      transition: 0.3s;
+    }
+
+    body.dark .form-card {
+      background: #1a1a1a;
+      box-shadow: 0px 3px 10px rgba(255, 255, 255, 0.05);
+    }
+
+    .form-card h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .transaction {
+      background: #fafafa;
+      padding: 14px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      border-left: 6px solid #007bff;
+      transition: 0.3s;
+    }
+
+    body.dark .transaction {
+      background: #121212;
+    }
+
+    .credit {
+      border-left-color: #2ecc71;
+    }
+
+    .debit {
+      border-left-color: #e74c3c;
+    }
+
+    .transaction h3 {
+      margin-bottom: 5px;
+      font-size: 17px;
+    }
+
+    .transaction p {
+      margin-bottom: 4px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    #emptyMsg {
+      margin-top: 20px;
+      text-align: center;
+      opacity: 0.7;
+      font-size: 15px;
+    }
+
+    /* -------------------------------------------
+        MOBILE RESPONSIVE IMPROVEMENTS
+    ------------------------------------------- */
+    @media (max-width: 480px) {
+      header {
+        font-size: 22px;
+      }
+
+      .form-card {
+        padding: 18px;
+      }
+
+      .form-card h2 {
+        font-size: 18px;
+      }
+
+      .transaction {
+        padding: 12px;
+      }
+
+      .transaction h3 {
+        font-size: 16px;
+      }
+
+      #themeBtn {
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <button id="themeBtn">Dark</button>
+
+  <header>
+    <h1>Transaction History</h1>
+  </header>
+
+  <div class="container">
+    <div class="form-card">
+      <h2>Your Recent Transactions</h2>
+      <div id="historyList"></div>
+      <p id="emptyMsg" style="display:none;">You have no transaction history.</p>
+    </div>
+  </div>
+
+  <script>
+    /* -------------------------
+      THEME SYSTEM
+    ----------------------------*/
+    const themeBtn = document.getElementById("themeBtn");
+
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark");
+      themeBtn.textContent = "Light";
+    }
+
+    themeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+
+      if (document.body.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+        themeBtn.textContent = "Light";
+      } else {
+        localStorage.setItem("theme", "light");
+        themeBtn.textContent = "Dark";
+      }
+    });
+
+    /* -------------------------
+      FETCH TRANSACTION HISTORY
+    ----------------------------*/
+    async function loadHistory() {
+      try {
+        const response = await fetch("http://localhost:4000/wallet/history", {
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          }
+        });
+
+        const data = await response.json();
+
+        const list = document.getElementById("historyList");
+        const emptyMsg = document.getElementById("emptyMsg");
+
+        if (!data.history || data.history.length === 0) {
+          emptyMsg.style.display = "block";
+          return;
+        }
+
+        data.history.forEach(tx => {
+          const box = document.createElement("div");
+          box.className = `transaction ${tx.type}`;
+
+          box.innerHTML = `
+            <h3>${tx.type.toUpperCase()} — ₦${tx.amount}</h3>
+            <p><strong>Date:</strong> ${tx.date}</p>
+            <p><strong>Description:</strong> ${tx.description}</p>
+          `;
+
+          list.appendChild(box);
+        });
+
+      } catch (err) {
+        console.error("History load error:", err);
+      }
+    }
+
+    loadHistory();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile | uchenzylogs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --text: #222;
+      --header: #111;
+      --header-text: #fff;
+      --card: #ffffff;
+      --shadow: rgba(0,0,0,0.12);
+      --accent: #111;
+      --input-bg: #fff;
+      --input-border: #ddd;
+    }
+
+    body.dark {
+      --bg: #0a0f18;
+      --text: #e6edf3;
+      --header: #000;
+      --header-text: #fff;
+      --card: #1c2128;
+      --shadow: rgba(0,0,0,0.5);
+      --accent: #3cba92;
+      --input-bg: #13171d;
+      --input-border: #333;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      transition: 0.3s;
+    }
+
+    header {
+      background: var(--header);
+      color: var(--header-text);
+      padding: 18px;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 25px auto;
+      padding: 16px;
+    }
+
+    .form-card {
+      background: var(--card);
+      padding: 22px;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    h2 {
+      margin-bottom: 18px;
+      font-size: 1.2rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text);
+      font-size: 15px;
+      margin-bottom: 12px;
+      transition: 0.3s;
+    }
+
+    input.readonly {
+      background: rgba(200, 200, 200, 0.25);
+      color: var(--text);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    /* Mobile Fixes */
+    @media (max-width: 480px) {
+      header {
+        font-size: 1.2rem;
+      }
+
+      .container {
+        padding: 12px;
+        margin-top: 15px;
+      }
+
+      .form-card {
+        padding: 18px;
+      }
+
+      input {
+        font-size: 14px;
+      }
+
+      button {
+        padding: 12px;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<script>
+  // Load saved theme
+  (() => {
+    const saved = localStorage.getItem("theme");
+    if (saved === "dark") document.body.classList.add("dark");
+  })();
+</script>
+
+<header>Your Profile</header>
+
+<div class="container">
+  <div class="form-card">
+
+    <h2>Account Information</h2>
+
+    <form id="profileForm">
+      <label>Email (readonly)</label>
+      <input type="email" id="email" class="readonly" readonly />
+
+      <label>User ID (readonly)</label>
+      <input type="text" id="userId" class="readonly" readonly />
+
+      <label>Account Created</label>
+      <input type="text" id="createdAt" class="readonly" readonly />
+
+      <label>Username</label>
+      <input type="text" id="username" placeholder="Enter username" />
+
+      <button type="submit">Update Profile</button>
+    </form>
+
+  </div>
+</div>
+
+<script>
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "/login.html";
+  }
+
+  // --- LOAD USER INFO ---
+  window.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const res = await fetch("http://localhost:4000/auth/me", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert("Session expired. Login again.");
+        localStorage.removeItem("token");
+        return window.location.href = "/login.html";
+      }
+
+      document.getElementById("email").value = data.email;
+      document.getElementById("userId").value = data.id;
+      document.getElementById("createdAt").value = new Date(data.created_at).toLocaleString();
+      document.getElementById("username").value = data.username || "";
+    } 
+    catch (err) {
+      alert("Error loading profile.");
+    }
+  });
+
+  // --- UPDATE PROFILE ---
+  document.getElementById("profileForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById("username").value;
+
+    try {
+      const res = await fetch("http://localhost:4000/auth/update-profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ username })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Profile updated successfully!");
+      } else {
+        alert(data.error || "Failed to update profile.");
+      }
+
+    } catch (err) {
+      alert("An error occurred.");
+    }
+  });
+</script>
+
+</body>
+</html>

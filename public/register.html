@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | uchenzylogs</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="/scripts/sweetalert2.all.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --text: #333;
+      --card-bg: #fff;
+      --accent: #0a7c58;
+      --shadow: rgba(0,0,0,0.08);
+    }
+
+    body.dark {
+      --bg: #090f18;
+      --text: #e6edf3;
+      --card-bg: #1f242c;
+      --accent: #3cba92;
+      --shadow: rgba(0,0,0,0.4);
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 420px;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px var(--shadow);
+      text-align: center;
+    }
+
+    h1 {
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      font-size: 1.6rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.9rem;
+      margin-top: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      background: var(--card-bg);
+      color: var(--text);
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 1rem;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    a {
+      display: block;
+      margin-top: 1rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* Extra mobile improvements */
+    @media (max-width: 480px) {
+      .card {
+        padding: 1.5rem;
+        border-radius: 12px;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      input,
+      button {
+        font-size: 0.95rem;
+        padding: 0.85rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Create Account ✨</h1>
+
+    <input id="email" type="email" placeholder="Email" required />
+    <input id="password" type="password" placeholder="Password" required />
+
+    <button id="registerBtn">Register</button>
+
+    <a href="/login.html">Already have an account? Login</a>
+  </div>
+
+  <script>
+    // Load theme
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark");
+    }
+
+    const apiBase = "http://localhost:4000";
+    const registerBtn = document.getElementById("registerBtn");
+
+    registerBtn.addEventListener("click", async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        return Swal.fire("Error", "Please enter email and password.", "error");
+      }
+
+      try {
+        const res = await fetch(`${apiBase}/auth/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Registration failed");
+
+        localStorage.setItem("token", data.token);
+
+        Swal.fire("Success", "Account created!", "success");
+        setTimeout(() => (window.location.href = "/dashboard.html"), 1000);
+
+      } catch (err) {
+        Swal.fire("Error", err.message, "error");
+      }
+    });
+  </script>
+</body>
+</html>

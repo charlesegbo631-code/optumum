@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logout | uchenzylogs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --card: #fff;
+      --text: #222;
+      --accent: #d90429;
+      --dark-bg: #0a101a;
+      --dark-card: #1c2128;
+    }
+
+    body.dark {
+      --bg: var(--dark-bg);
+      --card: var(--dark-card);
+      --text: #e6edf3;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      transition: 0.3s ease;
+    }
+
+    .logout-box {
+      background: var(--card);
+      padding: 32px;
+      width: 90%;
+      max-width: 360px;
+      border-radius: 14px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 15px;
+      margin-bottom: 25px;
+      color: var(--text);
+    }
+
+    #logoutBtn,
+    .cancel-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: 0.25s ease;
+      font-weight: 600;
+    }
+
+    #logoutBtn {
+      background: var(--accent);
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    #logoutBtn:hover {
+      background: #b10321;
+      transform: scale(1.03);
+    }
+
+    .cancel-btn {
+      background: #111;
+      color: #fff;
+    }
+    .cancel-btn:hover {
+      background: #333;
+      transform: scale(1.03);
+    }
+
+    /* MODAL */
+    .confirm-box {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .confirm-inner {
+      background: var(--card);
+      width: 90%;
+      max-width: 330px;
+      padding: 28px;
+      border-radius: 12px;
+      text-align: center;
+      animation: zoomIn 0.25s ease;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .confirm-inner h3 {
+      margin-bottom: 10px;
+    }
+
+    .confirm-inner p {
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .confirm-inner button {
+      padding: 10px;
+      width: 48%;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .yes {
+      background: var(--accent);
+      color: #fff;
+    }
+    .yes:hover {
+      background: #b10321;
+    }
+
+    .no {
+      background: #ddd;
+    }
+    .no:hover {
+      background: #c9c9c9;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="logout-box">
+    <h1>Logout</h1>
+    <p>Are you sure you want to log out of your account?</p>
+    <button id="logoutBtn">Logout</button>
+    <button class="cancel-btn" onclick="window.location.href='dashboard.html'">Cancel</button>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="confirm-box" id="confirmBox">
+    <div class="confirm-inner">
+      <h3>Confirm Logout</h3>
+      <p>Do you really want to log out?</p>
+
+      <button class="yes" id="yesLogout">Yes</button>
+      <button class="no" id="noLogout">No</button>
+    </div>
+  </div>
+
+  <script>
+    // Keep theme consistent across pages
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark");
+    }
+
+    const logoutBtn = document.getElementById('logoutBtn');
+    const confirmBox = document.getElementById('confirmBox');
+    const yesLogout = document.getElementById('yesLogout');
+    const noLogout = document.getElementById('noLogout');
+
+    logoutBtn.addEventListener('click', () => {
+      confirmBox.style.display = "flex";
+    });
+
+    noLogout.addEventListener('click', () => {
+      confirmBox.style.display = "none";
+    });
+
+    yesLogout.addEventListener('click', () => {
+      // Remove token
+      localStorage.removeItem("token");
+
+      // Redirect to homepage
+      window.location.href = "uchenzylogs_replica.html";
+    });
+  </script>
+
+</body>
+</html>
